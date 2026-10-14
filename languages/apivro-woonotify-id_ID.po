@@ -1,0 +1,298 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: NgirimWA Woo 1.2.0\n"
+"Report-Msgid-Bugs-To: https://github.com/yudhavro\n"
+"Language: id_ID\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Domain: apivro-woonotify\n"
+
+#: admin/class-apivro-message.php:108
+msgid "Messages saved successfully."
+msgstr "Pesan berhasil disimpan."
+
+#: admin/class-apivro-settings.php:17 admin/class-apivro-settings.php:30
+msgid "NgirimWA Woo Settings"
+msgstr "Pengaturan NgirimWA Woo"
+
+#: admin/class-apivro-settings.php:18
+msgid "NgirimWA Woo"
+msgstr "NgirimWA Woo"
+
+#: admin/class-apivro-settings.php:33 apivro-woonotify.php:123
+msgid "Settings"
+msgstr "Pengaturan"
+
+#: admin/class-apivro-settings.php:34
+msgid "Testing"
+msgstr "Pengujian"
+
+#: admin/class-apivro-settings.php:35
+msgid "Message Templates"
+msgstr "Template Pesan"
+
+#: admin/class-apivro-settings.php:85
+msgid "API Key validated successfully!"
+msgstr "API Key berhasil divalidasi!"
+
+#: admin/class-apivro-settings.php:88
+#, php-format
+msgid "API Key is valid, but the device status is \"%s\". Reconnect it in the NgirimWA dashboard."
+msgstr "API Key valid, tetapi status perangkat \"%s\". Hubungkan ulang di dashboard NgirimWA."
+
+#: admin/class-apivro-settings.php:93
+msgid "Settings saved. Please enter your API Key."
+msgstr "Pengaturan disimpan. Silakan masukkan API Key Anda."
+
+#: admin/class-apivro-testing.php:20
+msgid "Phone number/Group ID and message are required."
+msgstr "Nomor telepon/ID Grup dan pesan wajib diisi."
+
+#: admin/class-apivro-testing.php:24
+msgid "Invalid phone number or Group ID format."
+msgstr "Format nomor telepon atau ID Grup tidak valid."
+
+#: admin/class-apivro-testing.php:45
+#, php-format
+msgid "Message sent successfully to %d recipient(s)!"
+msgstr "Pesan berhasil dikirim ke %d penerima!"
+
+#: admin/class-apivro-testing.php:48
+#, php-format
+msgid "Message sent to %d recipient(s), but failed for %d recipient(s)."
+msgstr "Pesan terkirim ke %d penerima, namun gagal untuk %d penerima."
+
+#: admin/class-apivro-testing.php:51
+msgid "Failed to send message. Please check your API key and phone number/Group ID."
+msgstr "Gagal mengirim pesan. Silakan periksa API key dan nomor telepon/ID Grup Anda."
+
+#: admin/class-apivro-testing.php:60 admin/partials/settings/view-setting.php:37
+msgid "628123456789,123456789289524319@g.us"
+msgstr "628123456789,123456789289524319@g.us"
+
+#: admin/class-apivro-testing.php:61
+msgid "Enter WhatsApp numbers or Group IDs, separated by commas (without spaces). Example: 628123456789,123456789289524319@g.us"
+msgstr "Masukkan nomor WhatsApp atau ID Grup, dipisahkan dengan koma (tanpa spasi). Contoh: 628123456789,123456789289524319@g.us"
+
+#: admin/class-apivro-testing.php:67
+msgid "Type your test message here..."
+msgstr "Ketik pesan uji Anda di sini..."
+
+#: admin/partials/message/view-helper.php:23
+msgid "Customer Message"
+msgstr "Pesan Pelanggan"
+
+#: admin/partials/message/view-helper.php:31
+msgid "Message template that will be sent to the customer when this order status is triggered."
+msgstr "Template pesan yang akan dikirim ke pelanggan saat status pesanan ini dipicu."
+
+#: admin/partials/message/view-helper.php:37
+msgid "Admin Message"
+msgstr "Pesan Admin"
+
+#: admin/partials/message/view-helper.php:45
+msgid "Message template that will be sent to admin when this order status is triggered."
+msgstr "Template pesan yang akan dikirim ke admin saat status pesanan ini dipicu."
+
+#: admin/partials/message/view-helper.php:54
+msgid "Save Changes"
+msgstr "Simpan Perubahan"
+
+#: admin/partials/message/view-helper.php:73
+msgid "Customer name"
+msgstr "Nama pelanggan"
+
+#: admin/partials/message/view-helper.php:74
+msgid "Customer phone number"
+msgstr "Nomor telepon pelanggan"
+
+#: admin/partials/message/view-helper.php:75
+msgid "Customer email"
+msgstr "Email pelanggan"
+
+#: admin/partials/message/view-helper.php:76
+msgid "Customer address"
+msgstr "Alamat pelanggan"
+
+#: admin/partials/message/view-helper.php:77
+msgid "Order ID"
+msgstr "ID pesanan"
+
+#: admin/partials/message/view-helper.php:78
+msgid "Order number"
+msgstr "Nomor pesanan"
+
+#: admin/partials/message/view-helper.php:79
+msgid "Order date"
+msgstr "Tanggal pesanan"
+
+#: admin/partials/message/view-helper.php:80
+msgid "Order status"
+msgstr "Status pesanan"
+
+#: admin/partials/message/view-helper.php:81
+msgid "Order items list"
+msgstr "Daftar item pesanan"
+
+#: admin/partials/message/view-helper.php:82
+msgid "Shipping total"
+msgstr "Total ongkir"
+
+#: admin/partials/message/view-helper.php:83
+msgid "Order total"
+msgstr "Total pesanan"
+
+#: admin/partials/message/view-helper.php:84
+msgid "Invoice link"
+msgstr "Tautan invoice"
+
+#: admin/partials/message/view-helper.php:85
+msgid "Payment method"
+msgstr "Metode pembayaran"
+
+#: admin/partials/message/view-helper.php:89
+msgid "Available Variables"
+msgstr "Variabel Tersedia"
+
+#: admin/partials/message/view-helper.php:91
+msgid "Click on any variable to copy it to your clipboard, then paste it into the message fields above."
+msgstr "Klik salah satu variabel untuk menyalinnya ke clipboard, lalu tempelkan ke kolom pesan di atas."
+
+#: admin/partials/message/view-helper.php:96
+msgid "Variable"
+msgstr "Variabel"
+
+#: admin/partials/message/view-helper.php:97
+msgid "Description"
+msgstr "Deskripsi"
+
+#: admin/partials/message/view-message.php:13
+msgid "New order"
+msgstr "Pesanan baru"
+
+#: admin/partials/message/view-message.php:14
+msgid "Payment Complete"
+msgstr "Pembayaran Selesai"
+
+#: admin/partials/message/view-message.php:15
+msgid "On Hold"
+msgstr "Ditahan"
+
+#: admin/partials/message/view-message.php:16
+msgid "Processing"
+msgstr "Diproses"
+
+#: admin/partials/message/view-message.php:17
+msgid "Completed"
+msgstr "Selesai"
+
+#: admin/partials/message/view-message.php:18
+msgid "Cancelled"
+msgstr "Dibatalkan"
+
+#: admin/partials/message/view-message.php:19
+msgid "Refunded"
+msgstr "Direfund"
+
+#: admin/partials/message/view-message.php:20
+msgid "Failed"
+msgstr "Gagal"
+
+#: admin/partials/message/view-message.php:61
+msgid "Template not found."
+msgstr "Template tidak ditemukan."
+
+#: admin/partials/settings/view-setting.php:14
+msgid "API Key"
+msgstr "API Key"
+
+#: admin/partials/settings/view-setting.php:24
+msgid "Enter your NgirimWA API Key. You can get your API key from your NgirimWA dashboard at dash.ngirimwa.com"
+msgstr "Masukkan API Key NgirimWA. Ambil di dashboard NgirimWA (dash.ngirimwa.com)."
+
+#: admin/partials/settings/view-setting.php:30
+msgid "WhatsApp Admin Number"
+msgstr "Nomor WhatsApp Admin"
+
+#: admin/partials/settings/view-setting.php:39
+msgid "Enter WhatsApp numbers or Group IDs, separated by commas (without spaces). Each recipient will receive the notification. Example: 628123456789,123456789289524319@g.us"
+msgstr "Masukkan nomor WhatsApp atau ID grup, pisahkan dengan koma. Setiap penerima akan mendapat notifikasi. Contoh: 628123456789,123456789289524319@g.us"
+
+#: admin/partials/testing/view-testing.php:20
+msgid "Recipients"
+msgstr "Penerima"
+
+#: admin/partials/testing/view-testing.php:28
+msgid "Message"
+msgstr "Pesan"
+
+#: admin/partials/testing/view-testing.php:36
+msgid "Send Test"
+msgstr "Kirim Uji"
+
+#: apivro-woonotify.php:71
+msgid "NgirimWA Woo requires WooCommerce to be installed and active."
+msgstr "NgirimWA Woo membutuhkan WooCommerce yang terpasang dan aktif."
+
+#: apivro-woonotify.php:105
+msgid "NgirimWA Woo is paused:"
+msgstr "NgirimWA Woo dijeda:"
+
+#: apivro-woonotify.php:108
+msgid "Open settings"
+msgstr "Buka pengaturan"
+
+#: apivro-woonotify.php:139
+msgid "Copied!"
+msgstr "Disalin!"
+
+#: apivro-woonotify.php:140
+msgid "Error!"
+msgstr "Kesalahan!"
+
+#: includes/class-apivro-api.php:43 includes/class-apivro-api.php:103
+msgid "API Key is not set."
+msgstr "API Key belum diisi."
+
+#: includes/class-apivro-api.php:104
+msgid "API Key is invalid or was deleted. Create a new key in the NgirimWA dashboard."
+msgstr "API Key tidak valid atau sudah dihapus. Buat key baru di dashboard NgirimWA."
+
+#: includes/class-apivro-api.php:105
+msgid "API Key is inactive. Activate it in the NgirimWA dashboard."
+msgstr "API Key nonaktif. Aktifkan di dashboard NgirimWA."
+
+#: includes/class-apivro-api.php:106
+msgid "Your NgirimWA subscription is not active."
+msgstr "Langganan NgirimWA Anda tidak aktif."
+
+#: includes/class-apivro-api.php:107
+msgid "Your NgirimWA account is suspended. Contact support."
+msgstr "Akun NgirimWA Anda ditangguhkan. Hubungi support."
+
+#: includes/class-apivro-api.php:108
+msgid "The WhatsApp device is logged out. Scan the QR code again in the NgirimWA dashboard."
+msgstr "Perangkat WhatsApp sudah keluar. Scan ulang QR di dashboard NgirimWA."
+
+#: includes/class-apivro-api.php:109
+msgid "This API Key has no device. Create the key from a device in the NgirimWA dashboard."
+msgstr "API Key ini tidak terhubung ke perangkat. Buat key dari perangkat di dashboard NgirimWA."
+
+#: includes/class-apivro-api.php:110
+msgid "Monthly message quota is used up."
+msgstr "Kuota pesan bulan ini habis."
+
+#: includes/class-apivro-api.php:111
+msgid "Could not reach NgirimWA."
+msgstr "Tidak bisa menghubungi NgirimWA."
+
+#: includes/class-apivro-wc.php:368
+msgid "No message templates configured for this notification type."
+msgstr "Tidak ada template pesan yang dikonfigurasi untuk jenis notifikasi ini."
+
+#: includes/class-apivro-wc.php:434
+msgid "Guest"
+msgstr "Tamu"
+

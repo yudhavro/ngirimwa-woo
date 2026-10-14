@@ -1,0 +1,298 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: NgirimWA Woo 1.2.0\n"
+"Report-Msgid-Bugs-To: https://github.com/yudhavro\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Domain: apivro-woonotify\n"
+
+#: admin/class-apivro-message.php:108
+msgid "Messages saved successfully."
+msgstr ""
+
+#: admin/class-apivro-settings.php:17 admin/class-apivro-settings.php:30
+msgid "NgirimWA Woo Settings"
+msgstr ""
+
+#: admin/class-apivro-settings.php:18
+msgid "NgirimWA Woo"
+msgstr ""
+
+#: admin/class-apivro-settings.php:33 apivro-woonotify.php:123
+msgid "Settings"
+msgstr ""
+
+#: admin/class-apivro-settings.php:34
+msgid "Testing"
+msgstr ""
+
+#: admin/class-apivro-settings.php:35
+msgid "Message Templates"
+msgstr ""
+
+#: admin/class-apivro-settings.php:85
+msgid "API Key validated successfully!"
+msgstr ""
+
+#: admin/class-apivro-settings.php:88
+#, php-format
+msgid "API Key is valid, but the device status is \"%s\". Reconnect it in the NgirimWA dashboard."
+msgstr ""
+
+#: admin/class-apivro-settings.php:93
+msgid "Settings saved. Please enter your API Key."
+msgstr ""
+
+#: admin/class-apivro-testing.php:20
+msgid "Phone number/Group ID and message are required."
+msgstr ""
+
+#: admin/class-apivro-testing.php:24
+msgid "Invalid phone number or Group ID format."
+msgstr ""
+
+#: admin/class-apivro-testing.php:45
+#, php-format
+msgid "Message sent successfully to %d recipient(s)!"
+msgstr ""
+
+#: admin/class-apivro-testing.php:48
+#, php-format
+msgid "Message sent to %d recipient(s), but failed for %d recipient(s)."
+msgstr ""
+
+#: admin/class-apivro-testing.php:51
+msgid "Failed to send message. Please check your API key and phone number/Group ID."
+msgstr ""
+
+#: admin/class-apivro-testing.php:60 admin/partials/settings/view-setting.php:37
+msgid "628123456789,123456789289524319@g.us"
+msgstr ""
+
+#: admin/class-apivro-testing.php:61
+msgid "Enter WhatsApp numbers or Group IDs, separated by commas (without spaces). Example: 628123456789,123456789289524319@g.us"
+msgstr ""
+
+#: admin/class-apivro-testing.php:67
+msgid "Type your test message here..."
+msgstr ""
+
+#: admin/partials/message/view-helper.php:23
+msgid "Customer Message"
+msgstr ""
+
+#: admin/partials/message/view-helper.php:31
+msgid "Message template that will be sent to the customer when this order status is triggered."
+msgstr ""
+
+#: admin/partials/message/view-helper.php:37
+msgid "Admin Message"
+msgstr ""
+
+#: admin/partials/message/view-helper.php:45
+msgid "Message template that will be sent to admin when this order status is triggered."
+msgstr ""
+
+#: admin/partials/message/view-helper.php:54
+msgid "Save Changes"
+msgstr ""
+
+#: admin/partials/message/view-helper.php:73
+msgid "Customer name"
+msgstr ""
+
+#: admin/partials/message/view-helper.php:74
+msgid "Customer phone number"
+msgstr ""
+
+#: admin/partials/message/view-helper.php:75
+msgid "Customer email"
+msgstr ""
+
+#: admin/partials/message/view-helper.php:76
+msgid "Customer address"
+msgstr ""
+
+#: admin/partials/message/view-helper.php:77
+msgid "Order ID"
+msgstr ""
+
+#: admin/partials/message/view-helper.php:78
+msgid "Order number"
+msgstr ""
+
+#: admin/partials/message/view-helper.php:79
+msgid "Order date"
+msgstr ""
+
+#: admin/partials/message/view-helper.php:80
+msgid "Order status"
+msgstr ""
+
+#: admin/partials/message/view-helper.php:81
+msgid "Order items list"
+msgstr ""
+
+#: admin/partials/message/view-helper.php:82
+msgid "Shipping total"
+msgstr ""
+
+#: admin/partials/message/view-helper.php:83
+msgid "Order total"
+msgstr ""
+
+#: admin/partials/message/view-helper.php:84
+msgid "Invoice link"
+msgstr ""
+
+#: admin/partials/message/view-helper.php:85
+msgid "Payment method"
+msgstr ""
+
+#: admin/partials/message/view-helper.php:89
+msgid "Available Variables"
+msgstr ""
+
+#: admin/partials/message/view-helper.php:91
+msgid "Click on any variable to copy it to your clipboard, then paste it into the message fields above."
+msgstr ""
+
+#: admin/partials/message/view-helper.php:96
+msgid "Variable"
+msgstr ""
+
+#: admin/partials/message/view-helper.php:97
+msgid "Description"
+msgstr ""
+
+#: admin/partials/message/view-message.php:13
+msgid "New order"
+msgstr ""
+
+#: admin/partials/message/view-message.php:14
+msgid "Payment Complete"
+msgstr ""
+
+#: admin/partials/message/view-message.php:15
+msgid "On Hold"
+msgstr ""
+
+#: admin/partials/message/view-message.php:16
+msgid "Processing"
+msgstr ""
+
+#: admin/partials/message/view-message.php:17
+msgid "Completed"
+msgstr ""
+
+#: admin/partials/message/view-message.php:18
+msgid "Cancelled"
+msgstr ""
+
+#: admin/partials/message/view-message.php:19
+msgid "Refunded"
+msgstr ""
+
+#: admin/partials/message/view-message.php:20
+msgid "Failed"
+msgstr ""
+
+#: admin/partials/message/view-message.php:61
+msgid "Template not found."
+msgstr ""
+
+#: admin/partials/settings/view-setting.php:14
+msgid "API Key"
+msgstr ""
+
+#: admin/partials/settings/view-setting.php:24
+msgid "Enter your NgirimWA API Key. You can get your API key from your NgirimWA dashboard at dash.ngirimwa.com"
+msgstr ""
+
+#: admin/partials/settings/view-setting.php:30
+msgid "WhatsApp Admin Number"
+msgstr ""
+
+#: admin/partials/settings/view-setting.php:39
+msgid "Enter WhatsApp numbers or Group IDs, separated by commas (without spaces). Each recipient will receive the notification. Example: 628123456789,123456789289524319@g.us"
+msgstr ""
+
+#: admin/partials/testing/view-testing.php:20
+msgid "Recipients"
+msgstr ""
+
+#: admin/partials/testing/view-testing.php:28
+msgid "Message"
+msgstr ""
+
+#: admin/partials/testing/view-testing.php:36
+msgid "Send Test"
+msgstr ""
+
+#: apivro-woonotify.php:71
+msgid "NgirimWA Woo requires WooCommerce to be installed and active."
+msgstr ""
+
+#: apivro-woonotify.php:105
+msgid "NgirimWA Woo is paused:"
+msgstr ""
+
+#: apivro-woonotify.php:108
+msgid "Open settings"
+msgstr ""
+
+#: apivro-woonotify.php:139
+msgid "Copied!"
+msgstr ""
+
+#: apivro-woonotify.php:140
+msgid "Error!"
+msgstr ""
+
+#: includes/class-apivro-api.php:43 includes/class-apivro-api.php:103
+msgid "API Key is not set."
+msgstr ""
+
+#: includes/class-apivro-api.php:104
+msgid "API Key is invalid or was deleted. Create a new key in the NgirimWA dashboard."
+msgstr ""
+
+#: includes/class-apivro-api.php:105
+msgid "API Key is inactive. Activate it in the NgirimWA dashboard."
+msgstr ""
+
+#: includes/class-apivro-api.php:106
+msgid "Your NgirimWA subscription is not active."
+msgstr ""
+
+#: includes/class-apivro-api.php:107
+msgid "Your NgirimWA account is suspended. Contact support."
+msgstr ""
+
+#: includes/class-apivro-api.php:108
+msgid "The WhatsApp device is logged out. Scan the QR code again in the NgirimWA dashboard."
+msgstr ""
+
+#: includes/class-apivro-api.php:109
+msgid "This API Key has no device. Create the key from a device in the NgirimWA dashboard."
+msgstr ""
+
+#: includes/class-apivro-api.php:110
+msgid "Monthly message quota is used up."
+msgstr ""
+
+#: includes/class-apivro-api.php:111
+msgid "Could not reach NgirimWA."
+msgstr ""
+
+#: includes/class-apivro-wc.php:368
+msgid "No message templates configured for this notification type."
+msgstr ""
+
+#: includes/class-apivro-wc.php:434
+msgid "Guest"
+msgstr ""
+

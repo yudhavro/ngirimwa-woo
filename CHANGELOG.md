@@ -2,6 +2,20 @@
 
 Semua perubahan penting pada proyek ini akan didokumentasikan dalam file ini.
 
+## [1.2.0] - 2026-10-15
+
+### Diperbaiki
+- **Retry tanpa batas.** Notifikasi perubahan status yang gagal dijadwalkan ulang setiap 2 menit selamanya: aksi didaftarkan dengan 3 argumen dan urutan argumen retry tertukar, sehingga `attempt` selalu terbaca 1. Bila perangkat logout, situs terus mengirim ribuan request yang pasti ditolak. Sekarang retry maksimal 3 kali dengan urutan argumen yang benar.
+- Saat update ke 1.2.0, semua rantai retry lama (grup `apivro_whatsapp_notifications_retry`) dibatalkan otomatis.
+- Simpan pengaturan tidak lagi mengirim pesan uji sungguhan ke nomor bawaan; API Key dicek lewat `GET /devices/status`.
+- Log notifikasi disimpan di meta pesanan (kompatibel HPOS).
+
+### Ditambahkan
+- **Jeda otomatis** untuk error permanen (API Key salah/terhapus/nonaktif, perangkat logout, kuota habis, langganan nonaktif): pengiriman berhenti, muncul notice di admin, dan dilanjutkan setelah pengaturan disimpan ulang dengan koneksi valid atau setelah Testing.
+- Retry hanya untuk error sementara (jaringan, rate limit, 5xx) dengan menghormati `Retry-After`.
+- Header `Idempotency-Key` per pesanan + jenis notifikasi + penerima, dan `ref_id` `WC-<nomor pesanan>`.
+- Terjemahan Indonesia untuk teks baru; berkas `.po`/`.pot`.
+
 ## [1.1.0] - 2025-12-05
 
 ### Diubah

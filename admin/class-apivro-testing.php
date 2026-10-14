@@ -23,15 +23,21 @@ function apivro_woonotify_handle_test_submit() {
             if (empty($recipients)) {
                 add_settings_error('apivro_woonotify_test', 'apivro_woonotify_test_message', __('Invalid phone number or Group ID format.', 'apivro-woonotify'), 'error');
             } else {
+                // An explicit test from the admin is the way to resume after fixing the cause.
+                apivro_woonotify_resume();
                 $success_count = 0;
                 $fail_count = 0;
                 
                 foreach ($recipients as $recipient) {
-                    $response = apivro_send_message($recipient, $message);
+                    $response = apivro_send_message($recipient, $message, 'wc-test-' . wp_generate_uuid4(), 'WC-TEST');
                     if ($response && isset($response['success']) && $response['success']) {
                         $success_count++;
                     } else {
                         $fail_count++;
+                        $last = apivro_woonotify_last_error();
+                        if ($last) {
+                            add_settings_error('apivro_woonotify_test', 'apivro_woonotify_test_error', $recipient . ': ' . apivro_woonotify_describe_error($last), 'error');
+                        }
                     }
                 }
                 

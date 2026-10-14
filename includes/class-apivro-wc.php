@@ -30,7 +30,9 @@ class APIvro_WC_Notifications {
         // Register actions for Action Scheduler
         add_action('apivro_process_new_order_notification', array($this, 'process_new_order_notification'), 10, 2);
         add_action('apivro_process_payment_complete_notification', array($this, 'process_payment_complete_notification'), 10, 2);
-        add_action('apivro_process_status_change_notification', array($this, 'process_status_change_notification'), 10, 3);
+        // 4 args: order_id, old_status, new_status, attempt. (1.1.0 registered 3, so the retry attempt
+        // never arrived → every retry ran as attempt 1 and rescheduled itself forever.)
+        add_action('apivro_process_status_change_notification', array($this, 'process_status_change_notification'), 10, 4);
     }
 
     private function load_settings() {
@@ -153,6 +155,9 @@ class APIvro_WC_Notifications {
      * Process new order notification
      */
     public function process_new_order_notification($order_id, $attempt = 1) {
+        if ($this->skip_when_paused($order_id, 'new_order')) {
+            return;
+        }
         try {
             if ($this->is_order_processed($order_id, 'new_order')) {
                 return;
@@ -181,6 +186,9 @@ class APIvro_WC_Notifications {
      * Process payment complete notification
      */
     public function process_payment_complete_notification($order_id, $attempt = 1) {
+        if ($this->skip_when_paused($order_id, 'payment_complete')) {
+            return;
+        }
         try {
             if ($this->is_order_processed($order_id, 'payment_complete')) {
                 return;
@@ -208,6 +216,9 @@ class APIvro_WC_Notifications {
      * Process status change notification
      */
     public function process_status_change_notification($order_id, $old_status, $new_status, $attempt = 1) {
+        if ($this->skip_when_paused($order_id, 'status_' . $new_status)) {
+            return;
+        }
         try {
             $status_key = 'status_' . $new_status;
             if ($this->is_order_processed($order_id, $status_key)) {
@@ -239,64 +250,66 @@ class APIvro_WC_Notifications {
      * Handle notification errors and schedule retries
      */
     private function handle_notification_error($exception, $notification_type, $order_id, $attempt) {
-        // Log the error
+        $attempt = max(1, (int) $attempt);
+        $last = apivro_woonotify_last_error();
+        $code = is_array($last) ? $last['code'] : 'unknown';
+
         $error_message = sprintf(
-            'NgirimWA Woo: Failed to send %s notification for order #%d (attempt %d/%d). Error: %s',
+            'NgirimWA Woo: Failed to send %s notification for order #%d (attempt %d/%d, %s). Error: %s',
             $notification_type,
             $order_id,
             $attempt,
             $this->max_retry_attempts,
+            $code,
             $exception->getMessage()
         );
-        
         error_log($error_message);
         $this->log_notification($order_id, $notification_type, 'error', $error_message);
-        
-        // Schedule a retry if we haven't exceeded max attempts
-        if ($attempt < $this->max_retry_attempts) {
-            $next_attempt = $attempt + 1;
-            $retry_delay = min(pow(2, $attempt) * 60, 3600); // Exponential backoff, max 1 hour
-            
-            // Determine the action hook based on notification type
-            $action = '';
-            $args = array('order_id' => $order_id, 'attempt' => $next_attempt);
-            
-            if (strpos($notification_type, 'status_') === 0) {
-                $action = 'apivro_process_status_change_notification';
-                $status = str_replace('status_', '', $notification_type);
-                $args['new_status'] = $status;
-                $args['old_status'] = ''; // We don't have this info here, but it's only used for logging
-            } elseif ($notification_type === 'new_order') {
-                $action = 'apivro_process_new_order_notification';
-            } elseif ($notification_type === 'payment_complete') {
-                $action = 'apivro_process_payment_complete_notification';
-            }
-            
-            if ($action && function_exists('as_schedule_single_action')) {
-                as_schedule_single_action(
-                    time() + $retry_delay,
-                    $action,
-                    $args,
-                    'apivro_whatsapp_notifications_retry'
-                );
-                
-                error_log(sprintf(
-                    'NgirimWA Woo: Scheduled retry #%d for %s notification (order #%d) in %d seconds',
-                    $next_attempt,
-                    $notification_type,
-                    $order_id,
-                    $retry_delay
-                ));
-            }
-        } else {
-            error_log(sprintf(
-                'NgirimWA Woo: Max retry attempts reached for %s notification (order #%d)',
-                $notification_type,
-                $order_id
-            ));
+
+        // Retrying cannot fix these: sending is paused (see apivro_send_message) or the request is invalid.
+        $permanent = in_array($code, apivro_woonotify_pause_codes(), true)
+            || in_array($code, array('paused', 'validation_error', 'invalid_order'), true)
+            || (is_array($last) && $last['http'] >= 400 && $last['http'] < 500 && !in_array($code, array('rate_limited', 'auth_blocked', 'idempotency_in_progress'), true));
+        if ($permanent || $attempt >= $this->max_retry_attempts) {
+            error_log(sprintf('NgirimWA Woo: No more retries for %s notification (order #%d).', $notification_type, $order_id));
+            return;
         }
+        if (!function_exists('as_schedule_single_action')) {
+            return;
+        }
+
+        $next_attempt = $attempt + 1;
+        $retry_after = is_array($last) ? (int) $last['retry_after'] : 0;
+        $retry_delay = min(max($retry_after, pow(2, $attempt) * 60), 3600);
+
+        // Positional args must match the callback signature exactly.
+        if (strpos($notification_type, 'status_') === 0) {
+            $action = 'apivro_process_status_change_notification';
+            $args = array($order_id, '', substr($notification_type, 7), $next_attempt);
+        } elseif ($notification_type === 'new_order') {
+            $action = 'apivro_process_new_order_notification';
+            $args = array($order_id, $next_attempt);
+        } elseif ($notification_type === 'payment_complete') {
+            $action = 'apivro_process_payment_complete_notification';
+            $args = array($order_id, $next_attempt);
+        } else {
+            return;
+        }
+
+        as_schedule_single_action(time() + $retry_delay, $action, $args, 'apivro_whatsapp_notifications_retry');
+        error_log(sprintf('NgirimWA Woo: Scheduled retry #%d for %s notification (order #%d) in %d seconds', $next_attempt, $notification_type, $order_id, $retry_delay));
     }
-    
+
+    /** While sending is paused, record a skip instead of calling the API. */
+    private function skip_when_paused($order_id, $notification_type) {
+        $paused = apivro_woonotify_paused();
+        if (!$paused) {
+            return false;
+        }
+        $this->log_notification($order_id, $notification_type, 'skipped', 'Paused: ' . $paused['message']);
+        return true;
+    }
+
     /**
      * Log notification status
      */
@@ -308,19 +321,25 @@ class APIvro_WC_Notifications {
             'message' => $message
         );
         
-        $logs = get_post_meta($order_id, '_apivro_notification_logs', true);
+        // Order meta (works with HPOS; post meta does not exist for HPOS orders).
+        $order = wc_get_order($order_id);
+        if (!$order) {
+            return;
+        }
+        $logs = $order->get_meta('_apivro_notification_logs', true);
         if (!is_array($logs)) {
             $logs = array();
         }
-        
+
         $logs[] = $log_entry;
-        
+
         // Keep only the last 50 log entries to prevent bloating
         if (count($logs) > 50) {
             $logs = array_slice($logs, -50);
         }
-        
-        update_post_meta($order_id, '_apivro_notification_logs', $logs);
+
+        $order->update_meta_data('_apivro_notification_logs', $logs);
+        $order->save_meta_data();
     }
 
     /**
@@ -357,7 +376,7 @@ class APIvro_WC_Notifications {
             $admin_recipients = apivro_woonotify_parse_recipients($this->admin_phone);
             
             foreach ($admin_recipients as $recipient) {
-                $result = apivro_send_message($recipient, $admin_message);
+                $result = apivro_send_message($recipient, $admin_message, $this->idempotency_key($order_id, $admin_message_key, $recipient), 'WC-' . $order->get_order_number());
                 if ($result === false) {
                     $errors->add('admin_notification_failed', sprintf('Failed to send admin notification to %s', $recipient));
                 } else {
@@ -372,7 +391,7 @@ class APIvro_WC_Notifications {
             $formatted_phone = apivro_woonotify_format_phone_number($order->get_billing_phone());
             
             if (!empty($formatted_phone)) {
-                $result = apivro_send_message($formatted_phone, $customer_message);
+                $result = apivro_send_message($formatted_phone, $customer_message, $this->idempotency_key($order_id, $customer_message_key, $formatted_phone), 'WC-' . $order->get_order_number());
                 if ($result === false) {
                     $errors->add('customer_notification_failed', 'Failed to send customer notification');
                 } else {
@@ -394,6 +413,11 @@ class APIvro_WC_Notifications {
         
         // If we get here, everything was successful
         return true;
+    }
+
+    /** Same order + event + recipient → same key, so a retry never sends twice. */
+    private function idempotency_key($order_id, $message_key, $recipient) {
+        return 'wc-' . md5(home_url() . '|' . $order_id . '|' . $message_key . '|' . $recipient);
     }
 
     private function process_message_with_variables($message, $order) {

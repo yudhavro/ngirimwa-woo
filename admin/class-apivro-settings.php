@@ -76,10 +76,19 @@ function apivro_woonotify_register_settings() {
         update_option('apivro_woonotify_api_key', $api_key);
         update_option('apivro_woonotify_admin_phone', $admin_phone);
 
-        if (!empty($api_key) && apivro_test_api_credentials($api_key)) {
-            add_settings_error('apivro_woonotify_settings', 'apivro_woonotify_settings_message', __('API Key validated successfully!', 'apivro-woonotify'), 'updated');
-        } elseif (!empty($api_key)) {
-            add_settings_error('apivro_woonotify_settings', 'apivro_woonotify_settings_message', __('API Key validation failed. Please check your API key and try the Testing tab to verify.', 'apivro-woonotify'), 'error');
+        // Checks the key + device without sending a message (1.1.0 sent a real test message).
+        $check = !empty($api_key) ? apivro_woonotify_check_connection($api_key) : null;
+        if ($check && $check['ok']) {
+            $status = isset($check['data']['status']) ? $check['data']['status'] : '';
+            if ($status === 'connected') {
+                apivro_woonotify_resume();
+                add_settings_error('apivro_woonotify_settings', 'apivro_woonotify_settings_message', __('API Key validated successfully!', 'apivro-woonotify'), 'updated');
+            } else {
+                /* translators: %s: device status */
+                add_settings_error('apivro_woonotify_settings', 'apivro_woonotify_settings_message', sprintf(__('API Key is valid, but the device status is "%s". Reconnect it in the NgirimWA dashboard.', 'apivro-woonotify'), $status), 'error');
+            }
+        } elseif ($check) {
+            add_settings_error('apivro_woonotify_settings', 'apivro_woonotify_settings_message', apivro_woonotify_describe_error($check), 'error');
         } else {
             add_settings_error('apivro_woonotify_settings', 'apivro_woonotify_settings_message', __('Settings saved. Please enter your API Key.', 'apivro-woonotify'), 'updated');
         }

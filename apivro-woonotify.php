@@ -1,9 +1,9 @@
 <?php
 /**
  * Plugin Name: NgirimWA Woo
- * Plugin URI: https://yudhavro.com
+ * Plugin URI: https://github.com/yudhavro/ngirimwa-woo
  * Description: Send notifications for orders and order changes from WooCommerce to both admin and customers via WhatsApp using NgirimWA.
- * Version: 1.1.0
+ * Version: 1.2.0
  * Author: Yudhavro
  * Author URI: https://yudhavro.com
  * Text Domain: apivro-woonotify
@@ -19,7 +19,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('APIVRO_WOONOTIFY_VERSION', '1.1.0');
+define('APIVRO_WOONOTIFY_VERSION', '1.2.0');
 define('APIVRO_WOONOTIFY_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('APIVRO_WOONOTIFY_PLUGIN_URL', plugin_dir_url(__FILE__));
 
@@ -55,6 +55,9 @@ function apivro_woonotify_check_woocommerce() {
     require_once APIVRO_WOONOTIFY_PLUGIN_DIR . 'includes/class-apivro-api.php';
     require_once APIVRO_WOONOTIFY_PLUGIN_DIR . 'includes/class-apivro-wc.php';
 
+    // Action Scheduler is ready only from `action_scheduler_init` (fired on init).
+    add_action('action_scheduler_init', 'apivro_woonotify_maybe_upgrade');
+
     if (is_admin()) {
         require_once APIVRO_WOONOTIFY_PLUGIN_DIR . 'admin/class-apivro-settings.php';
         require_once APIVRO_WOONOTIFY_PLUGIN_DIR . 'admin/class-apivro-testing.php';
@@ -68,6 +71,42 @@ function apivro_woonotify_woocommerce_notice() {
         <p><?php esc_html_e('NgirimWA Woo requires WooCommerce to be installed and active.', 'apivro-woonotify'); ?></p>
     </div>
     <?php
+}
+
+/**
+ * 1.2.0: cancel retry chains left by 1.1.0. Its status-change retries lost their attempt counter and
+ * rescheduled themselves every 2 minutes forever (thousands of rejected API calls per hour once the
+ * device logged out). Fresh notifications are unaffected.
+ */
+function apivro_woonotify_maybe_upgrade() {
+    if (version_compare(get_option('apivro_woonotify_version', '0'), '1.2.0', '>=')) {
+        return;
+    }
+    if (!function_exists('as_unschedule_all_actions')) {
+        return; // try again on the next load
+    }
+    as_unschedule_all_actions('', array(), 'apivro_whatsapp_notifications_retry');
+    update_option('apivro_woonotify_version', APIVRO_WOONOTIFY_VERSION, false);
+}
+
+/** Notice on every admin page while sending is paused. */
+add_action('admin_notices', 'apivro_woonotify_paused_notice');
+
+function apivro_woonotify_paused_notice() {
+    if (!current_user_can('manage_options') || !function_exists('apivro_woonotify_paused')) {
+        return;
+    }
+    $paused = apivro_woonotify_paused();
+    if (!$paused) {
+        return;
+    }
+    printf(
+        '<div class="notice notice-error"><p><strong>%1$s</strong> %2$s <a href="%3$s">%4$s</a></p></div>',
+        esc_html__('NgirimWA Woo is paused:', 'apivro-woonotify'),
+        esc_html($paused['message']),
+        esc_url(admin_url('admin.php?page=apivro-woonotify-settings')),
+        esc_html__('Open settings', 'apivro-woonotify')
+    );
 }
 
 register_activation_hook(__FILE__, 'apivro_woonotify_activation');
